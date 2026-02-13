@@ -13,10 +13,10 @@ export function ResumeAppUnlock() {
   const { toast } = useToast();
 
   // APP LINK
-  const APP_DOWNLOAD_LINK = "https://rahulsonawane-rgb.github.io/AI-Resume-Builder/";
+  const APP_DOWNLOAD_LINK = "https://sorahul196-code.github.io/dev-vault/#resume-builder";
   
   // RESUME LINK
-  const RESUME_LINK = "https://raw.githubusercontent.com/sorahul196-code/rahul-portfolio/refs/heads/main/Resume.pdf";
+  const RESUME_LINK = "https://github.com/sorahul196-code/rahul-portfolio/raw/refs/heads/main/Resume.pdf";
   
   // GOOGLE DOCS VIEWER
   const PDF_PREVIEW_URL = `https://docs.google.com/gview?url=${RESUME_LINK}&embedded=true`;
