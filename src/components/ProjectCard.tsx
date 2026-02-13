@@ -142,23 +142,28 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
 
           <div className="flex gap-2">
-            <Button
-              size="sm"
-              className="h-8 bg-[#2a1a0a] hover:bg-[#000] text-[#e6dcc3] font-bold text-xs border border-[#2a1a0a] shadow-[2px_2px_0px_rgba(90,58,42,0.4)] active:translate-y-[1px] active:shadow-none transition-all"
-              onClick={() => window.open(project.liveLink, '_blank')}
-            >
-              <ExternalLink className="w-3 h-3 mr-1" />
-              Visit
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-8 border border-[#2a1a0a] text-[#2a1a0a] hover:bg-[#fff9e5] font-bold text-xs bg-transparent shadow-[2px_2px_0px_rgba(90,58,42,0.2)] active:translate-y-[1px] active:shadow-none transition-all"
-              onClick={() => window.open(project.githubLink, '_blank')}
-            >
-              <Github className="w-3 h-3 mr-1" />
-              Log
-            </Button>
+            {project.liveLink && (
+              <Button
+                size="sm"
+                className="h-8 bg-[#2a1a0a] hover:bg-[#000] text-[#e6dcc3] font-bold text-xs border border-[#2a1a0a] shadow-[2px_2px_0px_rgba(90,58,42,0.4)] active:translate-y-[1px] active:shadow-none transition-all"
+                onClick={() => window.open(project.liveLink, '_blank')}
+              >
+                <ExternalLink className="w-3 h-3 mr-1" />
+                Visit
+              </Button>
+            )}
+
+            {project.githubLink && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 border border-[#2a1a0a] text-[#2a1a0a] hover:bg-[#fff9e5] font-bold text-xs bg-transparent shadow-[2px_2px_0px_rgba(90,58,42,0.2)] active:translate-y-[1px] active:shadow-none transition-all"
+                onClick={() => window.open(project.githubLink, '_blank')}
+              >
+                <Github className="w-3 h-3 mr-1" />
+                Log
+              </Button>
+            )}
           </div>
         </div>
 

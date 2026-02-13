@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code, Copy, Check, Sparkles, Eye, Terminal, Filter, Zap, Layout, Box } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun, Flame, RefreshCcw, Shield, Menu, X } from 'lucide-react';
@@ -200,6 +201,7 @@ export function DevilFruitLibrary() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Record<string, 'preview' | 'code'>>({});
   const [filter, setFilter] = useState<'ALL' | 'PARAMECIA' | 'LOGIA' | 'SPECIAL'>('ALL');
+  const navigate = useNavigate();
 
   const toggleTab = (id: string, tab: 'preview' | 'code') => {
     setActiveTab(prev => ({ ...prev, [id]: tab }));
@@ -353,8 +355,8 @@ export function DevilFruitLibrary() {
          <div className="relative z-10">
            <h4 className="text-lg md:text-xl font-bold text-purple-100 mb-2">Need a specific Devil Fruit power?</h4>
            <p className="text-xs md:text-sm text-purple-200/60 mb-4">I can forge custom components for your crew.</p>
-           <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-xs md:text-sm">
-             Request Component via Den Den Mushi
+           <Button onClick={() => navigate('/#contact')} variant="outline" className="border-purple-500 text-purple-300 hover:bg-black-500/20 text-xs md:text-sm">
+             Request Component via Den Den Mushi( Contact Form )
            </Button>
          </div>
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none" />

@@ -1,35 +1,63 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom'; 
 import { Laugh, Crown, Lock, ArrowRight, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/useToast';
 
+// 1. One Piece Themed Emojis
+const LAUGH_EMOJIS = ['😂', '🤣', '💀', '🏴‍☠️', '👒', '🍖', '⛵', '🌊'];
+
 export function FinalEasterEgg() {
   const [laughCount, setLaughCount] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
-  const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [particles, setParticles] = useState<{ id: number; x: number; y: number; emoji: string; rotation: number }[]>([]);
+  const [mounted, setMounted] = useState(false);
+  
+  // Reference to the button to get its position
+  const buttonRef = useRef<HTMLButtonElement>(null);
   
   // Password State
   const [password, setPassword] = useState('');
   const [isUnlocked, setIsUnlocked] = useState(false);
   const { toast } = useToast();
 
-  const handleLaugh = (e: React.MouseEvent) => {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleLaugh = () => {
     const newCount = laughCount + 1;
     setLaughCount(newCount);
 
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    // 2. Get Button Position
+    let startX = window.innerWidth / 2; // Default to center if ref fails
+    let startY = window.innerHeight / 2;
+
+    if (buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        // Calculate center of the button
+        startX = rect.left + rect.width / 2;
+        startY = rect.top; // Start from top of button
+    }
+
+    // 3. Spawn particle from the button's location
     const newParticle = {
       id: Date.now(),
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: startX, 
+      y: startY, 
+      emoji: LAUGH_EMOJIS[Math.floor(Math.random() * LAUGH_EMOJIS.length)],
+      rotation: Math.random() > 0.5 ? 360 : -360,
+      // Add a random horizontal drift so they don't all go in a straight line
+      drift: (Math.random() - 0.5) * 100 
     };
+
     setParticles(prev => [...prev, newParticle]);
 
     setTimeout(() => {
       setParticles(prev => prev.filter(p => p.id !== newParticle.id));
-    }, 1000);
+    }, 3000);
 
     if (newCount === 10) {
       setShowSecret(true);
@@ -43,9 +71,7 @@ export function FinalEasterEgg() {
 
   const checkPassword = (e: React.FormEvent) => {
     e.preventDefault();
-    // Hint was "Pirate King's catchphrase (one word)". 
-    // Let's accept 'meat', 'freedom', 'kaizoku', or 'king'.
-    const valid = ['freedom', 'meat', 'kaizoku', 'king'];
+    const valid = ['liberation', 'freedom', 'joyboy', 'sun god', 'nika'];
     
     if (valid.includes(password.toLowerCase().trim())) {
       setIsUnlocked(true);
@@ -65,154 +91,174 @@ export function FinalEasterEgg() {
   };
 
   return (
-    <footer className="relative py-12 md:py-20 px-4 mt-12 md:mt-20 border-t-2 border-yellow-600/30 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* The D. Initial */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-8 md:mb-12"
-        >
+    <>
+      {/* 4. Global Portal for Floating Emojis */}
+      {mounted && createPortal(
+        <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+          <AnimatePresence>
+            {particles.map((particle) => (
+              <motion.div
+                key={particle.id}
+                className="absolute text-5xl md:text-7xl select-none filter drop-shadow-lg"
+                initial={{ 
+                  x: particle.x, 
+                  y: particle.y, 
+                  opacity: 0, 
+                  scale: 0.2, // Start very small inside the button
+                  rotate: 0 
+                }}
+                animate={{ 
+                  x: particle.x + particle.y * 0.1, // Drift left or right
+                  y: particle.y - 400, // Float UP significantly
+                  opacity: [0, 1, 1, 0], 
+                  scale: [0.2, 1.5, 1], // Popping effect
+                  rotate: particle.rotation 
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 2, ease: "easeOut" }} 
+              >
+                {particle.emoji}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>,
+        document.body
+      )}
+
+      <footer className="relative py-12 md:py-20 px-4 mt-12 md:mt-20 border-t-2 border-yellow-600/30 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          {/* The D. Initial */}
           <motion.div
-            className="inline-block relative cursor-default"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-8 md:mb-12"
           >
-            <h2 
-              className="text-[8rem] md:text-[12rem] text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-yellow-600 opacity-20 select-none leading-none"
-              style={{ 
-                fontFamily: 'serif',
-                WebkitTextStroke: '2px rgba(255, 215, 0, 0.3)'
-              }}
-            >
-              D.
-            </h2>
-          </motion.div>
-          
-          <p className="text-amber-100/60 text-xs md:text-sm italic mt-2 md:mt-4 px-4">
-            "The Will of D. lives on in those who chase their dreams."
-          </p>
-        </motion.div>
-
-        {/* Hidden Laugh Button */}
-        <div className="text-center mb-12">
-          <p className="text-yellow-200/70 mb-4 text-xs md:text-sm">
-            You've found Laugh Tale... but have you found <em>the laugh</em>?
-          </p>
-          
-          <motion.button
-            onClick={handleLaugh}
-            className="relative inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-purple-900 px-6 py-3 md:px-8 md:py-4 rounded-full shadow-lg hover:shadow-yellow-500/50 transition-all duration-300 overflow-hidden text-sm md:text-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Laugh className="w-5 h-5 md:w-6 md:h-6" />
-            <span className="font-bold whitespace-nowrap">
-              {laughCount === 0 ? "Laugh!" : `Laugh! (${laughCount}/10)`}
-            </span>
-
-            <AnimatePresence>
-              {particles.map((particle) => (
-                <motion.div
-                  key={particle.id}
-                  className="absolute pointer-events-none text-xl md:text-2xl"
-                  initial={{ x: particle.x, y: particle.y, opacity: 1, scale: 0 }}
-                  animate={{ y: particle.y - 100, opacity: 0, scale: 1.5 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  😂
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.button>
-        </div>
-
-        {/* Secret Message Modal */}
-        <AnimatePresence>
-          {showSecret && (
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="max-w-2xl mx-auto mb-16 md:mb-20 px-2"
+              className="inline-block relative cursor-default"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <div className="bg-gradient-to-br from-purple-900/95 to-indigo-900/95 backdrop-blur-xl border border-yellow-400/50 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
-                
-                <button 
-                  onClick={() => setShowSecret(false)}
-                  className="absolute top-3 right-3 md:top-4 md:right-4 text-white/50 hover:text-white"
-                >
-                  <X className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
-
-                <div className="text-center relative z-10">
-                  <Crown className="w-12 h-12 md:w-16 md:h-16 text-yellow-400 mx-auto mb-3 md:mb-4 animate-bounce" />
-                  <h3 className="text-2xl md:text-3xl text-yellow-300 mb-4 md:mb-6 font-bold" style={{ fontFamily: 'serif' }}>
-                    The Final Treasure
-                  </h3>
-
-                  {!isUnlocked ? (
-                    /* Locked State */
-                    <div className="space-y-4 md:space-y-6">
-                      <p className="text-amber-100 text-sm md:text-base">
-                        To access the private repository, you must answer the final riddle:
-                      </p>
-
-                      <div className="bg-black/30 p-3 md:p-4 rounded-lg border border-white/10">
-                        <p className="text-yellow-200 font-serif italic text-base md:text-lg">
-                          "I want the most ridiculous power in the world. I am the warrior of..."
-                        </p>
-                      </div>
-                      
-                      <form onSubmit={checkPassword} className="flex gap-2 max-w-sm mx-auto">
-                        <Input
-                          type="text"
-                          placeholder="Enter the word..."
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="bg-black/50 border-yellow-600/50 text-white placeholder:text-white/30 text-sm md:text-base h-10 md:h-11"
-                        />
-                        <Button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black h-10 md:h-11 px-3 md:px-4">
-                           <Lock className="w-4 h-4" />
-                        </Button>
-                      </form>
-                      <p className="text-[10px] md:text-xs text-white/40">Hint: It's what Luffy fights for.</p>
-                    </div>
-                  ) : (
-                    /* Unlocked State */
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="space-y-4 md:space-y-6"
-                    >
-                      <div className="p-4 md:p-6 bg-green-900/30 rounded-lg border border-green-500/30">
-                          <p className="text-lg md:text-xl text-green-300 font-bold mb-2">🔓 REPOSITORY UNLOCKED</p>
-                          <p className="text-amber-100/80 text-xs md:text-sm mb-4">
-                            You have proven your worth. Here is the link to my complete Portfolio, 
-                            design systems, and production assets.
-                          </p>
-                          <Button 
-                            onClick={() => window.open('https://github.com/RahulSonawane-rgb/One-Piece-Portfolio', '_blank')}
-                            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-5 md:py-6 text-base md:text-lg"
-                          >
-                             Go to Secret GitHub Repo <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
-                          </Button>
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
-              </div>
+              <h2 
+                className="text-[8rem] md:text-[12rem] text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-yellow-600 opacity-20 select-none leading-none"
+                style={{ 
+                  fontFamily: 'serif',
+                  WebkitTextStroke: '2px rgba(255, 215, 0, 0.3)'
+                }}
+              >
+                D.
+              </h2>
             </motion.div>
-          )}
-        </AnimatePresence>
+            
+            <p className="text-amber-100/60 text-xs md:text-sm italic mt-2 md:mt-4 px-4">
+              "The Will of D. lives on in those who chase their dreams."
+            </p>
+          </motion.div>
 
-        {/* Footer Info */}
-        <div className="text-center mt-8 md:mt-16 text-amber-100/40 text-[10px] md:text-xs space-y-2">
-          <p>© {new Date().getFullYear()} • Built with the power of the Gomu Gomu no Mi</p>
+          {/* Hidden Laugh Button */}
+          <div className="text-center mb-12">
+            <p className="text-yellow-200/70 mb-4 text-xs md:text-sm">
+              You've found Laugh Tale... but have you found <em>the laugh</em>?
+            </p>
+            
+            <motion.button
+              ref={buttonRef} // Attached the ref here!
+              onClick={handleLaugh}
+              className="relative inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-purple-900 px-6 py-3 md:px-8 md:py-4 rounded-full shadow-lg hover:shadow-yellow-500/50 transition-all duration-300 overflow-hidden text-sm md:text-lg active:scale-95 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Laugh className="w-5 h-5 md:w-6 md:h-6" />
+              <span className="font-bold whitespace-nowrap">
+                Laugh!
+              </span>
+            </motion.button>
+          </div>
+
+          {/* Secret Message Modal */}
+          <AnimatePresence>
+            {showSecret && (
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="max-w-2xl mx-auto mb-16 md:mb-20 px-2"
+              >
+                <div className="bg-gradient-to-br from-purple-900/95 to-indigo-900/95 backdrop-blur-xl border border-yellow-400/50 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+                  
+                  <button 
+                    onClick={() => setShowSecret(false)}
+                    className="absolute top-3 right-3 md:top-4 md:right-4 text-white/50 hover:text-white"
+                  >
+                    <X className="w-5 h-5 md:w-6 md:h-6" />
+                  </button>
+
+                  <div className="text-center relative z-10">
+                    <Crown className="w-12 h-12 md:w-16 md:h-16 text-yellow-400 mx-auto mb-3 md:mb-4 animate-bounce" />
+                    <h3 className="text-2xl md:text-3xl text-yellow-300 mb-4 md:mb-6 font-bold" style={{ fontFamily: 'serif' }}>
+                      The Final Treasure
+                    </h3>
+
+                    {!isUnlocked ? (
+                      /* Locked State */
+                      <div className="space-y-4 md:space-y-6">
+                        <p className="text-amber-100 text-sm md:text-base">
+                          To access the private repository, you must answer the final riddle:
+                        </p>
+
+                        <div className="bg-black/30 p-3 md:p-4 rounded-lg border border-white/10">
+                          <p className="text-yellow-200 font-serif italic text-base md:text-lg">
+                            "I want the most ridiculous power in the world. I am the warrior of..."
+                          </p>
+                        </div>
+                        
+                        <form onSubmit={checkPassword} className="flex gap-2 max-w-sm mx-auto">
+                          <Input
+                            type="text"
+                            placeholder="Enter the word..."
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="bg-black/50 border-yellow-600/50 text-white placeholder:text-white/30 text-sm md:text-base h-10 md:h-11"
+                          />
+                          <Button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black h-10 md:h-11 px-3 md:px-4">
+                             <Lock className="w-4 h-4" />
+                          </Button>
+                        </form>
+                        <p className="text-[10px] md:text-xs text-white/40">Hint: It's what Luffy fights for.</p>
+                      </div>
+                    ) : (
+                      /* Unlocked State */
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="space-y-4 md:space-y-6"
+                      >
+                        <div className="p-4 md:p-6 bg-green-900/30 rounded-lg border border-green-500/30">
+                            <p className="text-lg md:text-xl text-green-300 font-bold mb-2">🔓 REPOSITORY UNLOCKED</p>
+                            <p className="text-amber-100/80 text-xs md:text-sm mb-4">
+                              You have proven your worth. Here is the link to my complete Portfolio, 
+                              design systems, and production assets.
+                            </p>
+                            <Button 
+                              onClick={() => window.open('https://github.com/RahulSonawane-rgb/One-Piece-Portfolio', '_blank')}
+                              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-5 md:py-6 text-base md:text-lg"
+                            >
+                               Go to Secret GitHub Repo <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
+                            </Button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Footer Info */}
+          <div className="text-center mt-8 md:mt-16 text-amber-100/40 text-[10px] md:text-xs space-y-2">
+            <p>© {new Date().getFullYear()} • Built with the power of the Gomu Gomu no Mi</p>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

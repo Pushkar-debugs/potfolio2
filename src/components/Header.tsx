@@ -100,7 +100,7 @@ export function Header() {
 
         {/* Right side controls */}
         <div className="flex items-center gap-4">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
 
           {/* Mobile menu button */}
           <button

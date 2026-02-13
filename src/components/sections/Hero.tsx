@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Anchor, Map as MapIcon, Skull } from 'lucide-react';
+import { ChevronDown, Anchor, Send, Skull } from 'lucide-react';
 // 1. Import the hook
 import { useJoyboyDance } from '@/hooks/useJoyboyDance';
 
@@ -13,7 +13,7 @@ export function Hero() {
   // 2. Initialize the Hook
   const joyboy = useJoyboyDance();
 
-  const resumeUrl = "https://raw.githubusercontent.com/sorahul196-code/rahul-portfolio/refs/heads/main/Resume.pdf";
+  // REMOVED: resumeUrl constant
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -78,7 +78,7 @@ export function Hero() {
              <Skull className="w-4 h-4 text-[#5a3a2a]" />
           </motion.div>
 
-          {/* Main Headline - Converted h1 to motion.h1 */}
+          {/* Main Headline */}
           <motion.h1 
             {...joyboy} // 3. Make the text dance
             className="text-5xl md:text-7xl font-serif font-black mb-6 leading-tight text-[#5a3a2a]" 
@@ -101,7 +101,7 @@ export function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* Quote Box - Wrapped content to preserve entrance animation */}
+        {/* Quote Box */}
         <motion.div variants={itemVariants}>
             <motion.p
               {...joyboy} // 3. Make the quote dance
@@ -124,21 +124,16 @@ export function Hero() {
             </Button>
           </motion.div>
           
-          {/* Secondary Button Wrapper */}
+          {/* Secondary Button Wrapper - REPLACED: Signal Me (Contact) */}
           <motion.div {...joyboy}>
-            <a 
-              href={resumeUrl}
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <Button
+             <Button
                 variant="outline"
+                onClick={() => scrollToSection('contact')}
                 className="bg-[#fff9e5] hover:bg-[#e6dcc3] text-[#5a3a2a] border-2 border-[#5a3a2a] px-8 py-7 text-lg font-bold rounded shadow-[4px_4px_0px_0px_rgba(90,58,42,0.4)] hover:translate-y-1 hover:shadow-none transition-all duration-200"
               >
-                <MapIcon className="w-5 h-5 mr-2" />
-                View Bounty (Resume)
+                <Send className="w-5 h-5 mr-2" />
+                Signal Me (Contact)
               </Button>
-            </a>
           </motion.div>
         </motion.div>
       </motion.div>
