@@ -50,7 +50,7 @@ export const getProjectsData = () => {
             description: 'I originally "vibe-coded" this tool to replace my own messy notebooks and track debts with friends. It’s a simple, local-first finance diary built for the fun of solving my own problems—no logins, no databases, just pure utility. It turned out to be so handy for tracking peer-to-peer debts and liquidity that I decided to polish it and host it here for anyone else who needs to escape "spreadsheet hell."',
             image: 'https://i.ibb.co/tT2sr46J/Money-Ledger.png',
             techStack: ['HTML5', 'CSS3', 'JavaScript (Vanilla)', 'LocalStorage API', 'Intl Currency API'],
-            liveLink: 'https://rahulsonawane-rgb.github.io/Diary', // Add your live link if hosted (e.g., GitHub Pages)
+            liveLink: 'https://sorahul196-code.github.io/Diary',
             githubLink: 'https://github.com/sorahul196-code/Diary.git', 
           },
           {
