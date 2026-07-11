@@ -16,7 +16,7 @@ export function LegacyLog() {
   });
 
   const openOldPortfolio = () => {
-    window.open("https://rahul-portfolio-4zj5.onrender.com", "_blank");
+    window.open("#", "_blank");
   };
 
   return (
@@ -70,7 +70,7 @@ export function LegacyLog() {
                     <div className="w-3 h-3 rounded-full bg-green-500 border border-[#5a3a2a]"></div>
                 </div>
                 <div className="bg-[#fff9e5] px-4 py-1 rounded text-xs font-mono text-[#5a3a2a] border border-[#5a3a2a] truncate max-w-[200px] md:max-w-sm">
-                  rahul-portfolio-4zj5.onrender.com
+                  portfolio.example.com
                 </div>
                 <Anchor className="w-4 h-4 text-[#5a3a2a]" />
                 <div className="absolute top-40 right-40 opacity-50 hover:opacity-100 z-50">
@@ -80,8 +80,8 @@ export function LegacyLog() {
 
               {/* The Live Iframe */}
               <div className="relative w-full h-full bg-white">
-                  <iframe 
-                      src="https://rahul-portfolio-4zj5.onrender.com"
+                    <iframe 
+                      src="#"
                       title="Old Portfolio Preview"
                       className="w-full h-full border-0 opacity-80 group-hover:opacity-100 transition-opacity duration-500 grayscale group-hover:grayscale-0"
                       loading="lazy"

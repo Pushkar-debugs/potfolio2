@@ -60,7 +60,7 @@ export function BountyPosterResume() {
 
           {/* Name */}
           <h4 className="text-xl md:text-3xl text-center text-[#2a1a0a] uppercase font-black mb-1 md:mb-2 leading-none break-words" style={{ fontFamily: 'serif' }}>
-            RAHUL SONAWANE
+            PUSHKAR SAWANT
           </h4>
 
           {/* Bounty */}

@@ -52,14 +52,14 @@ const socialLinks = [
   {
     name: 'LinkedIn',
     icon: Linkedin,
-    url: 'https://www.linkedin.com/in/rahulsonawane-rgb',
+    url: '#',
     color: 'group-hover:text-blue-700',
     borderColor: 'group-hover:border-blue-700',
   },
   {
     name: 'Instagram',
     icon: Instagram,
-    url: 'https://www.instagram.com/rahulsonawane1st_358/',
+    url: '#',
     color: 'group-hover:text-pink-700',
     borderColor: 'group-hover:border-pink-700',
   },
@@ -73,14 +73,14 @@ const socialLinks = [
   {
     name: 'X',
     icon: XIcon,
-    url: 'https://x.com/RahulBtw',
+    url: '#',
     color: 'group-hover:text-slate-900',
     borderColor: 'group-hover:border-slate-900',
   },
   {
     name: 'Email',
     icon: Mail,
-    url: 'mailto:sorahul54@gmail.com',
+    url: '#',
     color: 'group-hover:text-red-700',
     borderColor: 'group-hover:border-red-700',
   },

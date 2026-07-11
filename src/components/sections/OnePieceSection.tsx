@@ -495,166 +495,26 @@ const OnePieceSection = () => {
   };
 
 
-  // --- THREE.JS INIT ---
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // --- 3D model removed: render a static placeholder image instead ---
+    useEffect(() => {
+      const container = containerRef.current;
+      if (!container) return;
 
-    // 1. Setup Scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 10000);
-    camera.position.z = isMobile ? 1200 : 800; // Zoom out on mobile
-    
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setClearColor(0x000000, 0); 
-    
-    while (container.firstChild) { container.removeChild(container.firstChild); }
-    container.appendChild(renderer.domElement);
+      // Clear any previous children and inject a static placeholder image
+      while (container.firstChild) { container.removeChild(container.firstChild); }
+      const img = document.createElement('img');
+      img.src = '/assets/luffy-gear5.png';
+      img.alt = 'Straw Hat Display';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      container.appendChild(img);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
-    controls.enableDamping = true;
-    controls.minDistance = 200;
-    controls.maxDistance = 2000;
-
-    systemRef.current = { 
-      ...systemRef.current, 
-      scene, camera, renderer, controls, 
-      clock: new THREE.Clock() 
-    };
-
-    // 2. Create Particles
-    const count = isMobile ? INITIAL_PARTICLE_COUNT_MOBILE : INITIAL_PARTICLE_COUNT_DESKTOP;
-    systemRef.current.uniforms.particleSize.value = isMobile ? 18.0 : 12.0;
-    createParticles(count);
-
-    // 3. Resize Handler
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-         const { width, height } = entry.contentRect;
-         if(width > 0 && height > 0) {
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-         }
-      }
-    });
-    resizeObserver.observe(container);
-
-    // 4. Input Handling
-    const handleInput = (x: number, y: number) => {
-       const rect = renderer.domElement.getBoundingClientRect();
-       gestureStateRef.current.mousePos.x = (x - rect.left) / rect.width;
-       gestureStateRef.current.mousePos.y = (y - rect.top) / rect.height;
-    };
-
-    renderer.domElement.addEventListener('mousemove', (e) => handleInput(e.clientX, e.clientY));
-    renderer.domElement.addEventListener('touchmove', (e) => {
-       if(e.touches.length > 0) handleInput(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: false });
-
-    renderer.domElement.addEventListener('mousedown', () => { gestureStateRef.current.snap = true; });
-    renderer.domElement.addEventListener('touchstart', () => { gestureStateRef.current.snap = true; }, { passive: false });
-
-    // 5. Animation Loop
-    const animate = () => {
-      systemRef.current.animationId = requestAnimationFrame(animate);
-      const { scene, camera, renderer, clock, controls, geometry, uniforms } = systemRef.current;
-      if (!scene || !camera || !renderer || !clock || !geometry) return;
-      
-      const delta = clock.getDelta();
-      const gestureState = gestureStateRef.current;
-
-      // Update Gesture Logic
-      if (!gestureState.isGestureEnabled) {
-        gestureState.distanceSmoothed = THREE.MathUtils.lerp(gestureState.distanceSmoothed, 1.0, 0.05);
-        gestureState.tensionSmoothed = THREE.MathUtils.lerp(gestureState.tensionSmoothed, 0.55, 0.05);
-        gestureState.yawSmoothed = THREE.MathUtils.lerp(gestureState.yawSmoothed, 0, 0.05);
-        gestureState.rollSmoothed = THREE.MathUtils.lerp(gestureState.rollSmoothed, 0, 0.05);
-      } else if (gestureState.webcamActive) {
-        gestureState.tensionSmoothed = THREE.MathUtils.lerp(gestureState.tensionSmoothed, gestureState.tension, 0.1);
-        gestureState.distanceSmoothed = THREE.MathUtils.lerp(gestureState.distanceSmoothed, gestureState.distance, 0.1);
-        gestureState.yawSmoothed = THREE.MathUtils.lerp(gestureState.yawSmoothed, gestureState.yaw, 0.1);
-        gestureState.rollSmoothed = THREE.MathUtils.lerp(gestureState.rollSmoothed, gestureState.roll, 0.1);
-      } else {
-        // Mouse Fallback
-        gestureState.distance = THREE.MathUtils.lerp(gestureState.mousePos.x, 1.0, 0.2); 
-        gestureState.tension = 1.0 - gestureState.mousePos.y; 
-        gestureState.distanceSmoothed = THREE.MathUtils.lerp(gestureState.distanceSmoothed, gestureState.distance, 0.1);
-        gestureState.tensionSmoothed = THREE.MathUtils.lerp(gestureState.tensionSmoothed, gestureState.tension, 0.1);
-        gestureState.yawSmoothed = THREE.MathUtils.lerp(gestureState.yawSmoothed, (gestureState.mousePos.x - 0.5) * 2, 0.1);
-        gestureState.rollSmoothed = THREE.MathUtils.lerp(gestureState.rollSmoothed, (gestureState.mousePos.y - 0.5) * 2, 0.1);
-      }
-
-      // Update UI Text
-      if (readoutTensionRef.current) readoutTensionRef.current.textContent = (gestureState.tensionSmoothed * 100).toFixed(0) + '%';
-      if (readoutDistanceRef.current) readoutDistanceRef.current.textContent = (gestureState.distanceSmoothed * 100).toFixed(0) + '%';
-
-      // Update Uniforms
-      uniforms.globalScale.value = THREE.MathUtils.mapLinear(gestureState.tensionSmoothed, 0.0, 1.0, 0.2, 3.0);
-      uniforms.spreadFactor.value = THREE.MathUtils.mapLinear(gestureState.distanceSmoothed, 0.0, 1.0, 0.0, 1.0);
-      uniforms.rotationX.value = gestureState.pitchSmoothed;
-      uniforms.rotationY.value = gestureState.yawSmoothed;
-      uniforms.rotationZ.value = gestureState.rollSmoothed;
-      uniforms.time.value += delta;
-
-      // Handle Snap Event
-      if (gestureState.snap) {
-         if (systemRef.current.geometry) updateParticleTargets(systemRef.current.geometry, count, 'gumgumrocket');
-         gestureState.snap = false;
-         setTimeout(() => {
-           if (systemRef.current.geometry) updateParticleTargets(systemRef.current.geometry, count, 'strawhat');
-         }, 500);
-      }
-
-      // Physics Simulation
-      const positions = geometry.attributes.position.array as Float32Array;
-      const targets = geometry.attributes.targetPosition.array as Float32Array;
-      const velocities = geometry.attributes.velocity.array as Float32Array;
-      const particleCount = uniforms.totalParticles.value;
-      const damp = uniforms.dampening.value;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        const px = positions[i3], py = positions[i3+1], pz = positions[i3+2];
-        let vx = velocities[i3], vy = velocities[i3+1], vz = velocities[i3+2];
-        
-        vx += (targets[i3] - px) * 0.015;
-        vy += (targets[i3+1] - py) * 0.015;
-        vz += (targets[i3+2] - pz) * 0.015;
-        
-        vx *= damp; vy *= damp; vz *= damp;
-        
-        vx += (Math.random() - 0.5) * 0.05;
-        vy += (Math.random() - 0.5) * 0.05;
-        vz += (Math.random() - 0.5) * 0.05;
-
-        positions[i3] = px + vx * (delta * 60);
-        positions[i3+1] = py + vy * (delta * 60);
-        positions[i3+2] = pz + vz * (delta * 60);
-        velocities[i3] = vx; velocities[i3+1] = vy; velocities[i3+2] = vz;
-      }
-      geometry.attributes.position.needsUpdate = true;
-      controls?.update();
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // Cleanup
-    return () => {
-      cancelAnimationFrame(systemRef.current.animationId);
-      cancelAnimationFrame(systemRef.current.processFrameId);
-      systemRef.current.isProcessing = false;
-      resizeObserver.disconnect();
-      if (systemRef.current.scene) {
-        systemRef.current.scene.clear();
-        if(systemRef.current.renderer) systemRef.current.renderer.dispose();
-      }
-    };
-  }, [isMobile, createParticles, updateParticleTargets]);
+      // No Three.js initialization or animation loop — model removed.
+      return () => {
+        while (container.firstChild) { container.removeChild(container.firstChild); }
+      };
+    }, [isMobile]);
 
   // --- JSX RENDER ---
   return (

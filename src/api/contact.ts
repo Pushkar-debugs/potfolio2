@@ -2,7 +2,7 @@ import emailjs from '@emailjs/browser';
 
 // 1. REPLACE THESE WITH YOUR ACTUAL KEYS FROM EMAILJS DASHBOARD
 const SERVICE_ID = 'service_2imprs3';
-const TEMPLATE_ID_ADMIN = 'template_76q0yua'; // Email to sorahul54
+const TEMPLATE_ID_ADMIN = 'template_76q0yua';
 const TEMPLATE_ID_USER = 'template_3ztuz6h';   // Email to the User
 const PUBLIC_KEY = 'GiI0L6ZTLWAswotWk';
 
@@ -15,8 +15,8 @@ interface ContactFormData {
 
 export const submitContactForm = async (data: ContactFormData) => {
   try {
-    // --- EMAIL 1: Notify You (Admin) ---
-    // This sends details TO sorahul54@gmail.com
+    // --- EMAIL 1: Notify Admin ---
+    // This sends details to the configured admin recipient via EmailJS
     await emailjs.send(
       SERVICE_ID,
       TEMPLATE_ID_ADMIN,

@@ -239,7 +239,7 @@ export function FinalEasterEgg() {
                               design systems, and production assets.
                             </p>
                             <Button 
-                              onClick={() => window.open('https://github.com/RahulSonawane-rgb/One-Piece-Portfolio', '_blank')}
+                              onClick={() => window.open('#', '_blank')}
                               className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-5 md:py-6 text-base md:text-lg"
                             >
                                Go to Secret GitHub Repo <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />

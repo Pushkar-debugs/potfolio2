@@ -14,7 +14,7 @@ export const getProjectsData = () => {
             description: 'A centralized distribution hub built to host and provide direct access to my suite of custom-engineered applications. Instead of standalone projects, I developed this unified portal to provide a professional download experience for my tools. It features a custom dynamic engine to serve application artifacts directly to users.',
             image: 'https://i.ibb.co/Xxd3LJGv/Screenshot-2026-02-13-204026.png', // Use a screenshot of your main store page
             techStack: ['Dynamic JSON Engine', 'URL Routing', 'Modern UI/UX', 'Distribution Infrastructure'],
-            liveLink: 'http://sorahul196-code.github.io/dev-vault', 
+            liveLink: '#', 
             githubLink: '', 
           },
           {
@@ -50,8 +50,8 @@ export const getProjectsData = () => {
             description: 'I originally "vibe-coded" this tool to replace my own messy notebooks and track debts with friends. It’s a simple, local-first finance diary built for the fun of solving my own problems—no logins, no databases, just pure utility. It turned out to be so handy for tracking peer-to-peer debts and liquidity that I decided to polish it and host it here for anyone else who needs to escape "spreadsheet hell."',
             image: 'https://i.ibb.co/tT2sr46J/Money-Ledger.png',
             techStack: ['HTML5', 'CSS3', 'JavaScript (Vanilla)', 'LocalStorage API', 'Intl Currency API'],
-            liveLink: 'https://sorahul196-code.github.io/Diary',
-            githubLink: 'https://github.com/sorahul196-code/Diary.git', 
+            liveLink: '#',
+            githubLink: '#', 
           },
           {
             id: '6',
@@ -60,7 +60,7 @@ export const getProjectsData = () => {
             image: 'https://i.ibb.co/VcBqx03b/Worker-Project.jpg',
             techStack: ['Google Apps Script', 'Google Sheets', 'HTML', 'CSS', 'JavaScript'],
             liveLink: '', // No live demo link provided
-            githubLink: 'https://github.com/sorahul196-code/google-sheets-worker-app.git',
+            githubLink: '#',
           },
         ],
       });

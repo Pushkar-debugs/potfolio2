@@ -12,11 +12,11 @@ export function ResumeAppUnlock() {
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
-  // APP LINK
-  const APP_DOWNLOAD_LINK = "https://sorahul196-code.github.io/dev-vault/#resume-builder";
+  // APP LINK (removed personal external links)
+  const APP_DOWNLOAD_LINK = "#";
   
-  // RESUME LINK
-  const RESUME_LINK = "https://github.com/sorahul196-code/rahul-portfolio/raw/refs/heads/main/Resume.pdf";
+  // RESUME LINK (placeholder)
+  const RESUME_LINK = "#";
   
   // GOOGLE DOCS VIEWER
   const PDF_PREVIEW_URL = `https://docs.google.com/gview?url=${RESUME_LINK}&embedded=true`;
@@ -117,28 +117,7 @@ export function ResumeAppUnlock() {
                </div>
 {/*                
                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Button 
-                    onClick={() => window.open(RESUME_LINK, '_blank')}
-                    className="bg-white hover:bg-gray-200 text-black font-bold px-8 h-12"
-                  >
-                     <Eye className="w-4 h-4 mr-2" />
-                     View Full Resume
-                  </Button>
-                  <Button 
-                    onClick={() => {
-                        const link = document.createElement('a');
-                        link.href = RESUME_LINK;
-                        link.download = 'Rahul_Sonawane_Resume.pdf';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }}
-                    variant="outline"
-                    className="border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 h-12 px-8"
-                  >
-                     <Download className="w-4 h-4 mr-2" />
-                     Download PDF
-                  </Button>
+                  <div className="text-xs text-white/40">Resume preview and download links removed for privacy.</div>
                </div> */}
             </div>
          </div>

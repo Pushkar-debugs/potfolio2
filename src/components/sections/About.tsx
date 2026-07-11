@@ -97,8 +97,8 @@ export function About() {
                     {/* IMAGE FRAME */}
                     <div className="w-full aspect-[4/3] bg-gray-200 border-[3px] border-[#2a1a0a] overflow-hidden mb-4 relative z-10 group">
                         <img 
-                          src="https://avatars.githubusercontent.com/u/188471525" 
-                          alt="Rahul Sonawane" 
+                          src="/assets/pushkar-portrait.png" 
+                          alt="Pushkar Sawant" 
                           className="w-full h-full object-cover transition-all duration-500 grayscale contrast-125 sepia-[0.3] group-hover:grayscale-0 group-hover:sepia-0"
                         />
                     </div>
@@ -106,7 +106,7 @@ export function About() {
                     {/* NAME & BOUNTY */}
                     <div className="relative z-10">
                         <h3 className="text-2xl md:text-3xl font-black text-[#2a1a0a] uppercase font-serif tracking-wide text-center leading-none mb-3">
-                          RAHUL SONAWANE
+                          PUSHKAR SAWANT
                         </h3>
                         <div className="absolute top-20 left-10 opacity-50 hover:opacity-100 z-50">
                           <RoadPoneglyph locationId="ABOUT_POSTER_1.5B" />
@@ -152,7 +152,7 @@ export function About() {
                             </h3>
                         </div>
                         <p className="opacity-90 leading-relaxed italic text-sm md:text-base">
-                          "I am <strong>Rahul Sonawane</strong>, a BCA student and Software Development Engineer. I build sturdy vessels using the <strong>MERN stack</strong> and automate the high seas with <strong>Python</strong> and <strong>Google Apps Script</strong>. My mission? To craft applications as precise as a captain's compass."
+                          "I am <strong>Pushkar Sawant</strong>, a CO student who studied at <strong>Vartak Polytechnic</strong>. I build sturdy vessels using the <strong>MERN stack</strong> and explore automation with <strong>Python</strong>. My mission? To craft applications as precise as a captain's compass."
                         </p>
                       </div>
 
@@ -165,7 +165,7 @@ export function About() {
                             </h3>
                         </div>
                         <p className="opacity-90 leading-relaxed italic text-sm md:text-base">
-                          "My journey began at Dr. Babasaheb Ambedkar Marathwada University. I've navigated through complex <strong>Odoo development</strong> and launched my own fleet including <em>Cafe Buddy</em> and AI-powered bots. I am always seeking new horizons and ready to join a crew that values innovation."                      
+                          "My journey began at Vartak Polytechnic. I've worked on web projects, small automation tools, and experimental AI helpers. I am always seeking new horizons and ready to join a crew that values innovation."                      
                         </p>
                       </div>
                       
