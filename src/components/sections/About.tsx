@@ -152,7 +152,7 @@ export function About() {
                             </h3>
                         </div>
                         <p className="opacity-90 leading-relaxed italic text-sm md:text-base">
-                          "I am <strong>Pushkar Sawant</strong>, a CO student who studied at <strong>Vartak Polytechnic</strong>. I build sturdy vessels using the <strong>MERN stack</strong> and explore automation with <strong>Python</strong>. My mission? To craft applications as precise as a captain's compass."
+                          "I am a passionate <strong>3rd-year Computer Engineering student</strong> with a strong interest in <strong>Web Development, Artificial Intelligence, and Machine Learning</strong>. I enjoy building innovative solutions that solve real-world problems and improve user experiences."
                         </p>
                       </div>
 
@@ -165,10 +165,17 @@ export function About() {
                             </h3>
                         </div>
                         <p className="opacity-90 leading-relaxed italic text-sm md:text-base">
-                          "My journey began at Vartak Polytechnic. I've worked on web projects, small automation tools, and experimental AI helpers. I am always seeking new horizons and ready to join a crew that values innovation."                      
+                          "My journey includes developing <strong>AI-powered applications, React-based web platforms</strong>, and participating in <strong>national-level hackathons</strong>. I continuously explore new technologies and strive to enhance my technical and problem-solving skills."
                         </p>
                       </div>
                       
+                      {/* Bio Item 3 */}
+                      <div>
+                        <p className="opacity-90 leading-relaxed italic text-sm md:text-base">
+                          "Apart from coding, I enjoy learning emerging technologies, collaborating with teams, participating in startup challenges, and contributing to impactful projects."
+                        </p>
+                      </div>
+
                       {/* Signature / Stamp */}
                       <div className="mt-6 flex justify-end">
                           <div className="border-4 border-[#d92121] text-[#d92121] px-3 py-1 font-black transform -rotate-12 opacity-80 text-xs md:text-sm uppercase tracking-widest rounded-sm">

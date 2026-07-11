@@ -44,7 +44,7 @@ To board this ship and run it locally, follow these commands:
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/RahulSonawane-rgb/One-Piece-Portfolio.git](https://github.com/RahulSonawane-rgb/One-Piece-Portfolio.git)
+    git clone [https://github.com/PushkarSawant/One-Piece-Portfolio.git](https://github.com/PushkarSawant/One-Piece-Portfolio.git)
     cd One-Piece-Portfolio
     ```
 
@@ -90,5 +90,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <p align="center">
-  Built with ❤️ and Haki by <a href="https://github.com/RahulSonawane-rgb">Rahul Sonawane</a>
+  Built with ❤️ and Haki by <a href="https://github.com/PushkarSawant">Pushkar Sawant</a>
 </p>
